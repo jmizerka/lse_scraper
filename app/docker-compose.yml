@@ -1,0 +1,26 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:  # remove mounting code in production
+      - ./core:/app/core:ro
+      - ./api:/app
+
+  cli:
+    build:
+      context: .
+      dockerfile: cli/Dockerfile
+    volumes:  # remove mounting code in production
+      - ./core:/app/core:ro
+      - ./cli:/app
+
+  watchdog:
+    build:
+      context: .
+      dockerfile: watchdog/Dockerfile
+    volumes:  # remove mounting code in production
+      - ./core:/app/core:ro
+      - ./watchdog:/app
