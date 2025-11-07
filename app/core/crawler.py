@@ -38,13 +38,10 @@ class Crawler:
                 await page.wait_for_selector(".bold-font-weight.refreshed-time", timeout=10000)
                 timestamp = await page.text_content(".bold-font-weight.refreshed-time")
 
-                price_clean = re.sub(r"[^\d.]", "", price_text or "")
-                price_value = float(price_clean) if price_clean else None
-
                 result = {
                     "stock code": stock["stock code"],
                     "company name": stock["company name"],
-                    "price": price_value,
+                    "price": price_text,
                     "timestamp": timestamp.strip() if timestamp else None,
                     "status": "success",
                     "error": None,
