@@ -17,7 +17,6 @@ class CLIAdapter:
             df = pd.read_csv(input_csv).where(pd.notnull, None)
             stocks = df.to_dict(orient="records")
             logger.info(f"Loaded {len(stocks)} stock entries from CSV")
-
             async with Crawler(max_concurrent=5) as crawler:
                 processor = StocksProcessor(crawler)
                 logger.info("Processing stocks asynchronously...")
