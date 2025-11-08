@@ -1,7 +1,8 @@
-import pandas as pd
 from pathlib import Path
 from io import BytesIO
 from typing import Optional, Union
+import pandas as pd
+
 
 class CSVHandler:
 
@@ -17,10 +18,7 @@ class CSVHandler:
 
     @staticmethod
     def write_csv(
-            data: list[dict],
-            path: Optional[Union[str, Path]] = None,
-            append: bool = False,
-            as_bytes: bool = False
+        data: list[dict], path: Optional[Union[str, Path]] = None, append: bool = False, as_bytes: bool = False
     ) -> Optional[BytesIO]:
         df = pd.DataFrame(data)
         if as_bytes:

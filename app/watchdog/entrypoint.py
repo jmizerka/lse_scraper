@@ -11,22 +11,10 @@ logger = logging.getLogger(__name__)
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Watch a directory for new CSV files and automatically process them."
-    )
+    parser = argparse.ArgumentParser(description="Watch a directory for new CSV files and automatically process them.")
 
-    parser.add_argument(
-        "--input-dir",
-        "-i",
-        required=True,
-        help="Directory to watch for new CSV files."
-    )
-    parser.add_argument(
-        "--output-dir",
-        "-o",
-        required=True,
-        help="Directory to save processed CSV output."
-    )
+    parser.add_argument("--input-dir", "-i", required=True, help="Directory to watch for new CSV files.")
+    parser.add_argument("--output-dir", "-o", required=True, help="Directory to save processed CSV output.")
 
     args = parser.parse_args()
     logger.info("Watcher Entrypoint started")
@@ -37,8 +25,8 @@ def main():
     except KeyboardInterrupt:
         logger.warning("Watcher stopped by user (Ctrl+C)")
         sys.exit(0)
-    except Exception as e:
-        logger.exception(f"Fatal error in Watcher: {e}")
+    except Exception as e:  # pylint:disable=broad-exception-caught
+        logger.exception("Fatal error in Watcher: %s", str(e))
         sys.exit(1)
     finally:
         logger.info("Watcher Entrypoint finished")

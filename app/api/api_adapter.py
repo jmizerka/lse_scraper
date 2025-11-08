@@ -18,20 +18,19 @@ async def process_csv(file: UploadFile = File(...)):
             raise HTTPException(status_code=400, detail="Only CSV files are supported")
         content = await file.read()
         stocks = CSVHandler.read_csv(content)
-        logger.info(f"Received CSV with {len(stocks)} rows")
+        logger.info("Received CSV with %s rows", len(stocks))
         async with Crawler(max_concurrent=5) as crawler:
             processor = StocksProcessor(crawler)
             results = await processor.process_stocks(stocks)
         csv_bytes = CSVHandler.write_csv(results, as_bytes=True)
         return StreamingResponse(
-            csv_bytes,
-            media_type="text/csv",
-            headers={"Content-Disposition": f"attachment; filename=stocks_result.csv"}
+            csv_bytes, media_type="text/csv", headers={"Content-Disposition": "attachment; filename=stocks_result.csv"}
         )
 
     except Exception as e:
-        logger.exception(f"Error processing CSV: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.exception("Error processing CSV: %s", str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
 
 @app.get("/health", summary="Health check")
 async def health():
