@@ -9,19 +9,17 @@ class StocksProcessor:
         self.crawler = crawler
 
     async def process_stocks(self, stocks: list[dict]) -> list[dict]:
-        logger.info(f"Starting stock processing for {len(stocks)} entries...")
+        logger.info("Starting stock processing for %s entries...", len(stocks))
         try:
             results = await self.crawler.crawl_all(stocks)
-        except Exception as e:
-            logger.exception(f"Unexpected error during crawling: {e}")
+        except Exception as e:  # pylint:disable=broad-exception-caught
+            logger.exception("Unexpected error during crawling: %s", str(e))
             return []
         succeeded = [r for r in results if r.get("status") == "success"]
         failed = [r for r in results if r.get("status") != "success"]
-        logger.info(f"Processing complete. Success: {len(succeeded)}, Failed: {len(failed)}")
+        logger.info("Processing complete. Success: %s, Failed: %s", len(succeeded), len(failed))
         if failed:
             for item in failed:
                 # you could easily plug in some notification system here
-                logger.warning(
-                    f"Failed: {item['company name']} ({item['stock code']}) | Error: {item['error']}"
-                )
+                logger.warning("Failed: %s (%s) | Error: %s", item["company name"], item["stock code"], item["error"])
         return succeeded

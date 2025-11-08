@@ -10,9 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="London Stock Exchange crawler CLI"
-    )
+    parser = argparse.ArgumentParser(description="London Stock Exchange crawler CLI")
     parser.add_argument(
         "--input",
         "-i",
@@ -33,8 +31,8 @@ def main():
     except KeyboardInterrupt:
         logger.warning("Execution interrupted by user (Ctrl+C)")
         sys.exit(1)
-    except Exception as e:
-        logger.error(f"Fatal error: {e}")
+    except Exception as e:  # pylint:disable=broad-exception-caught
+        logger.error("Fatal error: %s", str(e))
         sys.exit(1)
     finally:
         logger.info("CLI Entrypoint finished")
