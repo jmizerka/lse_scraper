@@ -20,7 +20,7 @@ logs/
 
 # Docker files
 Dockerfile*
-docker-compose.yml
+../docker-compose.yml
 
 # IDE/editor files
 .vscode/

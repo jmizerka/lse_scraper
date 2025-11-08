@@ -1,10 +1,12 @@
-FROM python:3.12-slim
+FROM app-base:latest
 
 WORKDIR /app
 
-COPY cli/requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt && playwright install chromium
+COPY app/cli/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY core/ ./core
-COPY cli/ ./
-COPY ./utils /app/utils
+COPY app/core ./core
+COPY app/utils ./utils
+COPY app/cli ./cli
+
+CMD ["python", "-m", "cli.entrypoint"]

@@ -1,10 +1,11 @@
 import os
+import asyncio
 import logging
 from datetime import datetime
 from watchfiles import awatch, Change
-from app.core.crawler import Crawler
-from app.core.stock_processor import StocksProcessor
-from app.core.csv_handler import CSVHandler
+from core.crawler import Crawler
+from core.stock_processor import StocksProcessor
+from core.csv_handler import CSVHandler
 
 logger = logging.getLogger(__name__)
 
@@ -12,10 +13,13 @@ logger = logging.getLogger(__name__)
 class WatcherAdapter:
     def __init__(self, input_dir: str, output_dir: str):
         self.input_dir = input_dir
+        os.makedirs(self.input_dir, exist_ok=True)
         self.output_dir = output_dir
+        os.makedirs(self.output_dir, exist_ok=True)
         logger.info("WatcherAdapter initialized. Watching: '%s', Output: '%s'", input_dir, output_dir)
 
     async def watch(self):
+        await asyncio.sleep(1)
         logger.info("Started watching directory: %s", self.input_dir)
         try:
             async for changes in awatch(self.input_dir):

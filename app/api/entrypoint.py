@@ -1,10 +1,10 @@
 import logging
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import StreamingResponse
-from app.core.csv_handler import CSVHandler
-from app.core.crawler import Crawler
-from app.core.stock_processor import StocksProcessor
-from app.utils.logger_setup import setup_logging
+from core.csv_handler import CSVHandler
+from core.crawler import Crawler
+from core.stock_processor import StocksProcessor
+from utils.logger_setup import setup_logging
 
 setup_logging("api")
 logger = logging.getLogger(__name__)

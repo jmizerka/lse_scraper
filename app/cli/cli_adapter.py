@@ -1,7 +1,7 @@
 import logging
-from app.core.stock_processor import StocksProcessor
-from app.core.crawler import Crawler
-from app.core.csv_handler import CSVHandler
+from core.stock_processor import StocksProcessor
+from core.crawler import Crawler
+from core.csv_handler import CSVHandler
 
 logger = logging.getLogger(__name__)
 
