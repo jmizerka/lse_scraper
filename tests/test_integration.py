@@ -13,11 +13,27 @@ from app.api.entrypoint import app
 
 
 class MockCrawler:
-    def __init__(self, max_concurrent): pass
-    async def __aenter__(self): return self
-    async def __aexit__(self, *args): return
+    def __init__(self, max_concurrent):
+        pass
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, *args):
+        return
+
     async def crawl_all(self, stocks):
-        return [{"stock code": s["stock code"], "company name": s["company name"], "price": "100", "timestamp": "2025-01-01", "status": "success", "error": None} for s in stocks]
+        return [
+            {
+                "stock code": s["stock code"],
+                "company name": s["company name"],
+                "price": "100",
+                "timestamp": "2025-01-01",
+                "status": "success",
+                "error": None,
+            }
+            for s in stocks
+        ]
 
 
 @pytest.mark.asyncio
@@ -65,13 +81,16 @@ async def test_watcher_adapter(tmp_path):
     assert len(result) == 1
     assert result[0]["status"] == "success"
 
+
 @pytest.mark.asyncio
 @patch("app.api.entrypoint.Crawler", new=MockCrawler)
 async def test_api_process_csv_mocked():
-    df = pd.DataFrame([
-        {"company name": "Test Co", "stock code": "TEST1"},
-        {"company name": "Another Co", "stock code": "TEST2"},
-    ])
+    df = pd.DataFrame(
+        [
+            {"company name": "Test Co", "stock code": "TEST1"},
+            {"company name": "Another Co", "stock code": "TEST2"},
+        ]
+    )
     buffer = io.BytesIO()
     df.to_csv(buffer, index=False)
     buffer.seek(0)

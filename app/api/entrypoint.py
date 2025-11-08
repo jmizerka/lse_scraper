@@ -27,7 +27,6 @@ async def process_csv(file: UploadFile = File(...)):
             csv_bytes, media_type="text/csv", headers={"Content-Disposition": "attachment; filename=stocks_result.csv"}
         )
 
-
     except Exception as e:
         logger.exception("Error processing CSV: %s", str(e))
         raise HTTPException(status_code=500, detail=str(e)) from e

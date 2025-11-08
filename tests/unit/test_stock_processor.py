@@ -37,7 +37,5 @@ async def test_process_stocks_partial_success(monkeypatch):
             ]
 
     processor = StocksProcessor(MixedCrawler())
-    result = await processor.process_stocks([
-        {"company name": "Vodafone"}, {"company name": "BT"}
-    ])
+    result = await processor.process_stocks([{"company name": "Vodafone"}, {"company name": "BT"}])
     assert len(result) == 1
