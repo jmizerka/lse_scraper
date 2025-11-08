@@ -9,14 +9,6 @@ services:
       - ./core:/app/core:ro
       - ./api:/app
 
-  cli:
-    build:
-      context: .
-      dockerfile: cli/Dockerfile
-    volumes:  # remove mounting code in production
-      - ./core:/app/core:ro
-      - ./cli:/app
-
   watchdog:
     build:
       context: .
@@ -24,3 +16,11 @@ services:
     volumes:  # remove mounting code in production
       - ./core:/app/core:ro
       - ./watchdog:/app
+
+  cron:
+    build:
+      context: .
+      dockerfile: cron/Dockerfile
+    volumes: # remove mounting code in production
+      - ./core:/app/core:ro
+      - ./cron:/app
