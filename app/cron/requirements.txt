@@ -1,3 +1,4 @@
 aiocron==2.1
 pandas==2.3.3
 playwright==1.55.0
+regex==2025.11.3

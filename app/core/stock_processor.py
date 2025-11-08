@@ -22,4 +22,8 @@ class StocksProcessor:
             for item in failed:
                 # you could easily plug in some notification system here
                 logger.warning("Failed: %s (%s) | Error: %s", item["company name"], item["stock code"], item["error"])
-        return succeeded
+        cleaned_data = [
+            {k: v for k, v in item.items() if k not in ("status", "error")}
+            for item in succeeded
+        ]
+        return cleaned_data

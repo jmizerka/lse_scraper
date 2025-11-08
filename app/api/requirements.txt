@@ -2,4 +2,5 @@ fastapi==0.121.0
 pandas==2.3.3
 playwright==1.55.0
 python-multipart==0.0.20
+regex==2025.11.3
 uvicorn==0.38.0

@@ -1,7 +1,7 @@
 import io
 import pytest
 import pandas as pd
-from app.core.csv_handler import CSVHandler
+from core.csv_handler import CSVHandler
 
 
 def test_read_csv_from_path(tmp_path):
