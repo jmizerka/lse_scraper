@@ -7,7 +7,7 @@ from utils.logger_setup import setup_logging
 from pathlib import Path
 import sys
 
-setup_logging()
+setup_logging("cron")
 logger = logging.getLogger(__name__)
 
 def parse_args():
