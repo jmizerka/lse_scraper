@@ -41,17 +41,17 @@ class Crawler:
         async with self.semaphore:
             page = await self.browser.new_page()
             try:
-                await page.goto(url, timeout=3000000)
+                await page.goto(url, timeout=30000)
                 logger.debug("Navigated to %s", url)
 
-                await page.wait_for_selector(".price-tag", timeout=1000000)
+                await page.wait_for_selector(".price-tag", timeout=30000)
                 price_text = await page.text_content(".price-tag")
 
-                await page.wait_for_selector(".bold-font-weight.refreshed-time", timeout=100000)
+                await page.wait_for_selector(".bold-font-weight.refreshed-time", timeout=30000)
                 timestamp = await page.text_content(".bold-font-weight.refreshed-time")
 
-                await page.wait_for_selector(".currency-label.small-font-size.item-label strong", timeout=100000)
-                currency = await page.text_content(".currency-label.small-font-size.item-label strong", timeout=100000)
+                await page.wait_for_selector(".currency-label.small-font-size.item-label strong", timeout=30000)
+                currency = await page.text_content(".currency-label.small-font-size.item-label strong", timeout=30000)
                 currency = re.sub(r'[^A-Za-z]', '', currency)
 
                 logger.info("Successfully fetched data for %s", stock["company name"])
@@ -59,7 +59,7 @@ class Crawler:
                 result = {
                     "stock code": stock["stock code"],
                     "company name": stock["company name"],
-                    "price": f"{price_text} {currency}",
+                    "price": f"{price_text}{currency}",
                     "timestamp": timestamp.strip() if timestamp else None,
                     "status": "success",
                     "error": None,
