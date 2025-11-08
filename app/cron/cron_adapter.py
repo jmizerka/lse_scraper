@@ -6,7 +6,7 @@ from aiocron import crontab
 
 from core.crawler import Crawler
 from core.stocks_processor import StocksProcessor
-
+from core.csv_handler import CSVHandler
 
 logger = logging.getLogger(__name__)
 
@@ -21,17 +21,14 @@ class CronAdapter:
     async def _process_file(self):
         logger.info("Cron job started...")
         try:
-            df = pd.read_csv(self.input_csv).where(pd.notnull, None)
-            stocks = df.to_dict(orient="records")
+            stocks = CSVHandler.read_csv(self.input_csv)
             logger.info(f"Loaded {len(stocks)} stock entries from {self.input_csv}")
-
             async with Crawler(max_concurrent=5) as crawler:
                 processor = StocksProcessor(crawler)
                 logger.info("Starting async stock processing...")
                 results = await processor.process_stocks(stocks)
-            output_exists = self.output_csv.exists()
-            pd.DataFrame(results).to_csv(self.output_csv, mode="a", header=not output_exists, index=False)
-            logger.info(f"Cron job results {'appended' if output_exists else 'created'} to {self.output_csv}")
+            CSVHandler.write_csv(results, self.output_csv, append=True)
+            logger.info(f"Cron job results appended to {self.output_csv}")
         except Exception as e:
             logger.exception(f"Error during cron job execution': {e}")
 
