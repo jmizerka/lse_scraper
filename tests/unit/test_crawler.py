@@ -55,10 +55,12 @@ async def test_get_stock_data_failure(monkeypatch):
 @pytest.mark.asyncio
 async def test_crawl_all(monkeypatch):
     crawler = Crawler()
-    mock_get = AsyncMock(side_effect=[
-        {"company name": "A", "status": "success"},
-        {"company name": "B", "status": "success"},
-    ])
+    mock_get = AsyncMock(
+        side_effect=[
+            {"company name": "A", "status": "success"},
+            {"company name": "B", "status": "success"},
+        ]
+    )
     crawler.get_stock_data = mock_get
 
     stocks = [

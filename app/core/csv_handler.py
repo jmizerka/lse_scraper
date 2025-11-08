@@ -14,6 +14,8 @@ class CSVHandler:
             df = pd.read_csv(BytesIO(path_or_bytes)).where(pd.notnull, None)
         else:
             raise TypeError("Unsupported input type for CSV reading")
+        if df.isnull().any(axis=1).any():
+            raise ValueError("CSV contains missing values")
         return df.to_dict(orient="records")
 
     @staticmethod

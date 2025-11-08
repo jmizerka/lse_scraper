@@ -1,10 +1,10 @@
 import logging
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import StreamingResponse
-from core.csv_handler import CSVHandler
-from core.crawler import Crawler
-from core.stocks_processor import StocksProcessor
-from utils.logger_setup import setup_logging
+from app.core.csv_handler import CSVHandler
+from app.core.crawler import Crawler
+from app.core.stock_processor import StocksProcessor
+from app.utils.logger_setup import setup_logging
 
 setup_logging("api")
 logger = logging.getLogger(__name__)
@@ -13,9 +13,9 @@ app = FastAPI(title="Stock Processor API")
 
 @app.post("/process_csv", summary="Upload CSV and get processed CSV in response")
 async def process_csv(file: UploadFile = File(...)):
+    if not file.filename.endswith(".csv"):
+        raise HTTPException(status_code=400, detail="Only CSV files are supported")
     try:
-        if not file.filename.endswith(".csv"):
-            raise HTTPException(status_code=400, detail="Only CSV files are supported")
         content = await file.read()
         stocks = CSVHandler.read_csv(content)
         logger.info("Received CSV with %s rows", len(stocks))

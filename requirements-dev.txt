@@ -2,3 +2,6 @@ flake8==7.3.0
 Flake8-pyproject==1.2.3
 black==25.9.0
 pylint==4.0.1
+pytest==8.4.2
+pytest-asyncio==1.2.0
+httpx==0.28.1

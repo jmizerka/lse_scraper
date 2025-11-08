@@ -12,31 +12,50 @@ def run_all(args):
     processes = [start_process(["python", "-m", "api.entrypoint"])]
 
     if args.cli_input and args.cli_output:
-        processes.append(start_process(
-            [
-                "python", "-m", "cli.entrypoint",
-                "--input", args.cli_input,
-                "--output", args.cli_output,
-            ],
-        ))
+        processes.append(
+            start_process(
+                [
+                    "python",
+                    "-m",
+                    "cli.entrypoint",
+                    "--input",
+                    args.cli_input,
+                    "--output",
+                    args.cli_output,
+                ],
+            )
+        )
 
     if args.cron_input and args.cron_output:
-        processes.append(start_process(
-            [
-                "python", "-m", "cron.entrypoint",
-                "--input", args.cron_input,
-                "--output", args.cron_output,
-                "--cron", args.cron_expr,
-            ],
-        ))
+        processes.append(
+            start_process(
+                [
+                    "python",
+                    "-m",
+                    "cron.entrypoint",
+                    "--input",
+                    args.cron_input,
+                    "--output",
+                    args.cron_output,
+                    "--cron",
+                    args.cron_expr,
+                ],
+            )
+        )
     if args.watchdog_input_dir and args.watchdog_output_dir:
-        processes.append(start_process(
-            [
-                "python", "-m", "watchdog.entrypoint",
-                "--input-dir", args.watchdog_input_dir,
-                "--output-dir", args.watchdog_output_dir,
-            ],
-        ))
+        processes.append(
+            start_process(
+                [
+                    "python",
+                    "-m",
+                    "watchdog.entrypoint",
+                    "--input-dir",
+                    args.watchdog_input_dir,
+                    "--output-dir",
+                    args.watchdog_output_dir,
+                ],
+            )
+        )
     try:
         for p in processes:
             p.wait()
@@ -60,10 +79,15 @@ def run_cli(args):
 def run_cron(args):
     subprocess.run(
         [
-            "python", "-m", "cron.entrypoint",
-            "--input", args.input,
-            "--output", args.output,
-            "--cron", args.cron,
+            "python",
+            "-m",
+            "cron.entrypoint",
+            "--input",
+            args.input,
+            "--output",
+            args.output,
+            "--cron",
+            args.cron,
         ],
         check=True,
     )
@@ -72,9 +96,13 @@ def run_cron(args):
 def run_watchdog(args):
     subprocess.run(
         [
-            "python", "-m", "watchdog.entrypoint",
-            "--input-dir", args.input_dir,
-            "--output-dir", args.output_dir,
+            "python",
+            "-m",
+            "watchdog.entrypoint",
+            "--input-dir",
+            args.input_dir,
+            "--output-dir",
+            args.output_dir,
         ],
         check=True,
     )
