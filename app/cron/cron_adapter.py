@@ -1,7 +1,6 @@
 import asyncio
 import logging
 from pathlib import Path
-import pandas as pd
 from aiocron import crontab
 
 from core.crawler import Crawler

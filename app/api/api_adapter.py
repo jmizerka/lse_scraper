@@ -1,9 +1,6 @@
 import logging
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import StreamingResponse
-from io import BytesIO
-import pandas as pd
-
 from core.csv_handler import CSVHandler
 from core.crawler import Crawler
 from core.stocks_processor import StocksProcessor
