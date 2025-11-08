@@ -1,11 +1,10 @@
 import os
 import logging
-import pandas as pd
 from datetime import datetime
 from watchfiles import awatch, Change
 from core.crawler import Crawler
 from core.stocks_processor import StocksProcessor
-
+from core.csv_handler import CSVHandler
 
 logger = logging.getLogger(__name__)
 
@@ -33,8 +32,7 @@ class WatcherAdapter:
     async def _process_file(self, file_path: str):
         logger.info(f"Processing file: {file_path}")
         try:
-            df = pd.read_csv(file_path).where(pd.notnull, None)
-            stocks = df.to_dict(orient="records")
+            stocks = CSVHandler.read_csv(file_path)
             logger.info(f"Loaded {len(stocks)} stock entries from {file_path}")
             async with Crawler(max_concurrent=5) as crawler:
                 processor = StocksProcessor(crawler)
@@ -44,7 +42,7 @@ class WatcherAdapter:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             output_filename = f"stocks_output_{timestamp}.csv"
             output_path = os.path.join(self.output_dir, output_filename)
-            pd.DataFrame(results).to_csv(output_path, index=False)
+            CSVHandler.write_csv(results, output_path)
             logger.info(f"Results saved to {output_path}")
         except Exception as e:
             logger.exception(f"Error processing file '{file_path}': {e}")
