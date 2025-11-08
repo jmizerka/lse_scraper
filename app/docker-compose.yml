@@ -8,19 +8,56 @@ services:
     volumes:  # remove mounting code in production
       - ./core:/app/core:ro
       - ./api:/app
+    restart: always
+    environment:
+      - LOG_LEVEL=INFO
+      - LOG_DIR=logs
 
   watchdog:
     build:
       context: .
-      dockerfile: watchdog/Dockerfile
+      dockerfile: watchdog/
+    command: python -m watchdog.main --input-dir /data/input --output-dir /data/output
+    restart: always
     volumes:  # remove mounting code in production
       - ./core:/app/core:ro
-      - ./watchdog:/app
+      - ./watchdog:/
+      - ./data/watchdog:/data
+    environment:
+      - LOG_LEVEL=INFO
+      - LOG_DIR=logs
 
   cron:
     build:
       context: .
       dockerfile: cron/Dockerfile
+    command: >
+      python -m cron.entrypoint
+      --input /data/input/stocks.csv
+      --output /data/output/stocks_output.csv
+      --cron "*/10 * * * *"
     volumes: # remove mounting code in production
       - ./core:/app/core:ro
       - ./cron:/app
+      - ./data/cron:/data
+    restart: always
+    environment:
+      - LOG_LEVEL=INFO
+      - LOG_DIR=logs
+
+  cli:
+    build:
+      context: .
+      dockerfile: cli/Dockerfile
+    command: >
+      python -m cli.entrypoint
+      --input /data/input/stocks.csv
+      --output /data/output/stocks_output.csv
+    volumes: # remove mounting code in production
+      - ./core:/app/core:ro
+      - ./cli:/app
+      - ./data/cli:/data
+    restart: "no"
+    environment:
+      - LOG_LEVEL=INFO
+      - LOG_DIR=logs
