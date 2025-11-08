@@ -6,7 +6,9 @@ import pandas as pd
 
 from core.crawler import Crawler
 from core.stocks_processor import StocksProcessor
+from utils.logger_setup import setup_logging
 
+setup_logging("api")
 logger = logging.getLogger(__name__)
 app = FastAPI(title="Stock Processor API")
 
@@ -36,3 +38,7 @@ async def process_csv(file: UploadFile = File(...)):
     except Exception as e:
         logger.exception(f"Error processing CSV: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/health", summary="Health check")
+async def health():
+    return {"status": "ok"}
