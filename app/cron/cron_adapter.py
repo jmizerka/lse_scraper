@@ -3,9 +3,9 @@ import logging
 from pathlib import Path
 from aiocron import crontab
 
-from core.crawler import Crawler
-from core.stocks_processor import StocksProcessor
-from core.csv_handler import CSVHandler
+from app.core.crawler import Crawler
+from app.core.stock_processor import StocksProcessor
+from app.core.csv_handler import CSVHandler
 
 logger = logging.getLogger(__name__)
 

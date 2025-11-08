@@ -2,8 +2,8 @@ import asyncio
 import argparse
 import logging
 import sys
-from watchdog.watchdog_adapter import WatcherAdapter
-from utils.logger_setup import setup_logging
+from app.watchdog.watchdog_adapter import WatcherAdapter
+from app.utils.logger_setup import setup_logging
 
 
 setup_logging("watchdog")
