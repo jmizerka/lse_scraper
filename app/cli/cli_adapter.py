@@ -1,3 +1,15 @@
+"""
+CLI Adapter Module
+------------------
+This module defines the `CLIAdapter` class, which provides a command-line interface
+for processing stock data using the same underlying logic as the API.
+
+The adapter reads stock data from an input CSV file, processes each stock asynchronously
+(using the `Crawler` and `StocksProcessor`), and writes the processed results to an output CSV.
+
+It is designed to be invoked by a CLI entry point.
+"""
+
 import logging
 from core.stock_processor import StocksProcessor
 from core.crawler import Crawler

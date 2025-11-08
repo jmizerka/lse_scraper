@@ -1,3 +1,15 @@
+"""
+Watchdog CLI Entrypoint
+------------------------------
+This module provides a command-line interface (CLI) to monitor a directory
+for new CSV files and automatically process them using the `WatcherAdapter`.
+
+Features:
+- Watches a specified input directory for new CSV files.
+- Automatically processes detected CSV files and saves output to a target directory.
+- Uses asynchronous execution for efficient file monitoring and processing.
+"""
+
 import asyncio
 import argparse
 import logging

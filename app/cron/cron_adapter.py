@@ -1,3 +1,12 @@
+"""
+Cron Adapter
+------------------
+This module defines the `CronAdapter` class, which provides scheduled,
+asynchronous execution of the stock processing workflow using cron expressions.
+
+The adapter is designed for batch processing of stock CSV files.
+"""
+
 import asyncio
 import logging
 from pathlib import Path

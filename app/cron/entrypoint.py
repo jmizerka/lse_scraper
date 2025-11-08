@@ -1,3 +1,16 @@
+"""
+Cron CLI Entrypoint
+--------------------------
+This module provides a command-line interface (CLI) to run the CronAdapter,
+which periodically processes stock CSV data based on a configurable cron schedule.
+
+Features:
+- Parses command-line arguments for input/output CSV files and cron expression.
+- Validates input file existence and prepares output directories.
+- Initializes the CronAdapter for scheduled asynchronous stock processing.
+- Runs an asyncio event loop to continuously execute scheduled tasks.
+"""
+
 import asyncio
 import argparse
 import logging
