@@ -1,3 +1,16 @@
+"""
+Stocks Processor
+-----------------------
+This module defines the `StocksProcessor` class, which handles the asynchronous
+processing of multiple stock entries using a provided crawler.
+
+It acts as a higher-level abstraction over the `Crawler`, allowing:
+- Parallel fetching of stock data.
+- Separation of successful and failed results.
+- Logging of successes and failures.
+- Cleaning and formatting of processed data for further use (e.g., CSV output or API response).
+"""
+
 import logging
 
 

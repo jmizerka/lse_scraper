@@ -1,3 +1,19 @@
+"""
+Logger Setup
+------------------
+This module provides a utility function `setup_logging` to configure structured logging
+for the application. It supports logging to both the console and rotating log files
+with configurable log levels.
+
+Features:
+- Logs are written to a `logs/` directory (or directory specified by LOG_DIR environment variable).
+- Timed rotating log files (daily rotation at midnight) with retention of 90 days.
+- Console logging to stdout.
+- Log level configurable via LOG_LEVEL environment variable (default: INFO).
+- Log messages formatted with timestamp, logger name, level, and message.
+
+"""
+
 import logging
 import os
 import sys

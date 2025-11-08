@@ -1,3 +1,23 @@
+"""
+Watcher Adapter
+----------------------
+This module defines the `WatcherAdapter` class, which monitors a specified
+directory for new CSV files and automatically processes them using the
+stock processing pipeline.
+
+It integrates:
+- `watchfiles.awatch` for asynchronous file system watching.
+- `Crawler` for fetching stock data from external sources.
+- `StocksProcessor` for processing and cleaning stock data.
+- `CSVHandler` for reading input CSVs and writing processed results.
+
+Features:
+- Automatically detects new CSV files added to the input directory.
+- Processes each CSV asynchronously and saves results to the output directory.
+- Timestamps output files to prevent overwriting.
+- Handles errors and logs progress at each stage.
+"""
+
 import os
 import asyncio
 import logging

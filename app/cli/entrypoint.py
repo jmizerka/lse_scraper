@@ -1,3 +1,17 @@
+"""
+CLI Entrypoint for the Stock Processor
+--------------------------------------
+This module provides the command-line interface (CLI) entrypoint for executing
+the stock processing workflow
+
+It parses user-provided command-line arguments (input and output CSV file paths),
+initializes logging, and invokes the `CLIAdapter` to asynchronously process stock data.
+
+The CLI provides an easy way to run processing of single csv file.
+
+"""
+
+
 import asyncio
 import argparse
 import logging

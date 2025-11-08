@@ -1,3 +1,18 @@
+"""
+Launcher
+----------------------------------
+This module provides a unified CLI for running individual adapters
+(API, CLI, Cron, Watchdog) or all adapters concurrently as separate
+subprocesses.
+
+Features:
+- Launches services using Python subprocesses.
+- Supports running multiple adapters concurrently with the "all" option.
+- Provides CLI argument parsing for each adapter, including input/output paths
+  and cron schedules.
+- Handles graceful termination on keyboard interrupts.
+"""
+
 import argparse
 import sys
 import subprocess

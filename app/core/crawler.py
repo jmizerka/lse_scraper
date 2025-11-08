@@ -1,3 +1,19 @@
+"""
+Crawler
+--------------
+This module defines the `Crawler` class, which asynchronously retrieves
+live stock data from the **London Stock Exchange (LSE)** website using Playwright.
+
+It is designed for concurrent data fetching, supporting configurable
+parallelism through an asyncio semaphore to balance performance and resource usage.
+
+Features:
+- Asynchronous crawling using `playwright.async_api`.
+- Concurrency control with configurable limits.
+- Automatic URL construction based on stock codes and company names.
+- Extraction of price, currency, and timestamp data from company pages.
+"""
+
 import asyncio
 import re
 import logging

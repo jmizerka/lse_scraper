@@ -1,3 +1,17 @@
+"""
+CSV Handler
+------------------
+This module defines the `CSVHandler` class, which provides utility methods
+for reading and writing CSV files in both synchronous and in-memory (byte stream)
+modes.
+
+It supports:
+- Reading CSV data from file paths or byte content.
+- Writing processed data to disk or returning it as a bytes buffer.
+- Automatic conversion of `NaN` values to `None` for JSON compatibility.
+- Optional append mode for adding results to existing CSVs.
+"""
+
 from pathlib import Path
 from io import BytesIO
 from typing import Optional, Union
