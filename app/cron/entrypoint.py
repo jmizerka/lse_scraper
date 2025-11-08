@@ -5,7 +5,7 @@ import signal
 from pathlib import Path
 import sys
 from cron.cron_adapter import CronAdapter
-from utils.logger_setup import (setup_logging)
+from utils.logger_setup import setup_logging
 
 
 setup_logging("cron")

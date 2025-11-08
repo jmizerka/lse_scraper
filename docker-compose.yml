@@ -1,43 +1,40 @@
+version: "3.9"
+
 services:
   api:
     build:
       context: .
       dockerfile: app/api/Dockerfile
     ports:
-      - "8000:8000"
+      - "${API_PORT:-8000}:8000"
     volumes:
-      - ./app/core:/core:ro
-      - ./app/api:/api
-      - ./app/utils:/utils:ro
-      - ./logs:/logs
-    environment:
-      - LOG_LEVEL=INFO
-      - LOG_DIR=/logs
+      - ./app/core:${APP_ROOT}/core:ro
+      - ./app/api:${APP_ROOT}/api
+      - ./app/utils:${APP_ROOT}/utils:ro
+      - ./logs:${LOG_DIR}
     restart: always
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:${API_PORT:-8000}/health"]
       interval: 30s
       timeout: 5s
       retries: 3
-    command: ["uvicorn", "api.entrypoint:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    command: >
+      uvicorn api.entrypoint:app --host 0.0.0.0 --port ${API_PORT:-8000} --reload
 
   cli:
     build:
       context: .
       dockerfile: app/cli/Dockerfile
     volumes:
-      - ./app/core:/core:ro
-      - ./app/cli:/cli
-      - ./app/utils:/utils:ro
-      - ./data/cli:/data/cli
-      - ./logs:/logs
-    environment:
-      - LOG_LEVEL=INFO
-      - LOG_DIR=/logs
+      - ./app/core:${APP_ROOT}/core:ro
+      - ./app/cli:${APP_ROOT}/cli
+      - ./app/utils:${APP_ROOT}/utils:ro
+      - ./data/cli:${DATA_DIR}/cli
+      - ./logs:${LOG_DIR}
     command: >
       python -m cli.entrypoint
-      --input /data/cli/stocks.csv
-      --output /data/cli/stocks_output.csv
+      --input ${CLI_INPUT}
+      --output ${CLI_OUTPUT}
     restart: "no"
 
   cron:
@@ -45,19 +42,16 @@ services:
       context: .
       dockerfile: app/cron/Dockerfile
     volumes:
-      - ./app/core:/core:ro
-      - ./app/cron:/cron
-      - ./app/utils:/utils:ro
-      - ./data/cron:/data/cron
-      - ./logs:/logs
-    environment:
-      - LOG_LEVEL=INFO
-      - LOG_DIR=/logs
+      - ./app/core:${APP_ROOT}/core:ro
+      - ./app/cron:${APP_ROOT}/cron
+      - ./app/utils:${APP_ROOT}/utils:ro
+      - ./data/cron:${DATA_DIR}/cron
+      - ./logs:${LOG_DIR}
     command: >
       python -m cron.entrypoint
-      --input /data/cron/stocks.csv
-      --output /data/cron/stocks_output.csv
-      --cron "*/1 * * * *"
+      --input ${CRON_INPUT}
+      --output ${CRON_OUTPUT}
+      --cron "${CRON_SCHEDULE}"
     restart: always
 
   watchdog:
@@ -65,13 +59,14 @@ services:
       context: .
       dockerfile: app/watchdog/Dockerfile
     volumes:
-      - ./app/core:/core:ro
-      - ./app/watchdog:/watchdog
-      - ./app/utils:/utils:ro
-      - ./data/watchdog:/data/watchdog
-      - ./logs:/logs
-    environment:
-      - LOG_LEVEL=INFO
-      - LOG_DIR=/logs
-    command: python -m watchdog.entrypoint --input-dir /data/watchdog/input --output-dir /data/watchdog/output
+      - ./app/core:${APP_ROOT}/core:ro
+      - ./app/watchdog:${APP_ROOT}/watchdog
+      - ./app/utils:${APP_ROOT}/utils:ro
+      - ./data/watchdog:${DATA_DIR}/watchdog
+      - ./logs:${LOG_DIR}
+    command: >
+      python -m watchdog.entrypoint
+      --input-dir ${WATCHDOG_INPUT_DIR}
+      --output-dir ${WATCHDOG_OUTPUT_DIR}
     restart: always
+
