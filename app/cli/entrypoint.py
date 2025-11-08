@@ -25,13 +25,6 @@ def main():
         required=True,
         help="Path to output CSV file to save results",
     )
-    parser.add_argument(
-        "--log-level",
-        "-l",
-        default="INFO",
-        choices=["DEBUG", "INFO", "WARNING", "ERROR"],
-        help="Set logging level (default: INFO)",
-    )
 
     args = parser.parse_args()
     logger.info("CLI Entrypoint started")
