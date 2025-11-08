@@ -2,8 +2,8 @@ import asyncio
 import argparse
 import logging
 import sys
-from app.cli.cli_adapter import CLIAdapter
-from app.utils.logger_setup import setup_logging
+from cli.cli_adapter import CLIAdapter
+from utils.logger_setup import setup_logging
 
 setup_logging("cli")
 logger = logging.getLogger(__name__)

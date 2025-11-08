@@ -4,8 +4,8 @@ import logging
 import signal
 from pathlib import Path
 import sys
-from app.cron.cron_adapter import CronAdapter
-from app.utils.logger_setup import setup_logging
+from cron.cron_adapter import CronAdapter
+from utils.logger_setup import (setup_logging)
 
 
 setup_logging("cron")

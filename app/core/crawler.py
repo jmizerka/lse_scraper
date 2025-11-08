@@ -40,13 +40,13 @@ class Crawler:
         async with self.semaphore:
             page = await self.browser.new_page()
             try:
-                await page.goto(url, timeout=30000)
+                await page.goto(url, timeout=3000000)
                 logger.debug("Navigated to %s", url)
 
-                await page.wait_for_selector(".price-tag", timeout=10000)
+                await page.wait_for_selector(".price-tag", timeout=1000000)
                 price_text = await page.text_content(".price-tag")
 
-                await page.wait_for_selector(".bold-font-weight.refreshed-time", timeout=10000)
+                await page.wait_for_selector(".bold-font-weight.refreshed-time", timeout=1000000)
                 timestamp = await page.text_content(".bold-font-weight.refreshed-time")
 
                 logger.info("Successfully fetched data for %s", stock["company name"])

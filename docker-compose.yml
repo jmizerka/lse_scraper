@@ -2,74 +2,76 @@ services:
   api:
     build:
       context: .
-      dockerfile: api/Dockerfile
+      dockerfile: app/api/Dockerfile
     ports:
       - "8000:8000"
-    volumes:  # remove mounting code in production
-      - ./core:/app/core:ro
-      - ./api:/app
+    volumes:
+      - ./app/core:/core:ro
+      - ./app/api:/api
+      - ./app/utils:/utils:ro
       - ./logs:/logs
-    restart: always
     environment:
       - LOG_LEVEL=INFO
-      - LOG_DIR=logs
+      - LOG_DIR=/logs
+    restart: always
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
       timeout: 5s
       retries: 3
-    command: >
-      uvicorn api.entrypoint:app --host 0.0.0.0 --port 8000 --reload
-
-
-  watchdog:
-    build:
-      context: .
-      dockerfile: watchdog/Dockerfile
-    command: python -m watchdog.entrypoint --input-dir /data/input --output-dir /data/output
-    restart: always
-    volumes:  # remove mounting code in production
-      - ./core:/app/core:ro
-      - ./watchdog:/app/watchdog
-      - ./data/watchdog:/data
-      - ./logs:/logs
-    environment:
-      - LOG_LEVEL=INFO
-      - LOG_DIR=logs
-
-  cron:
-    build:
-      context: .
-      dockerfile: cron/Dockerfile
-    command: >
-      python -m cron.entrypoint
-      --input /data/input/stocks.csv
-      --output /data/output/stocks_output.csv
-      --cron "*/10 * * * *"
-    volumes: # remove mounting code in production
-      - ./core:/app/core:ro
-      - ./cron:/app
-      - ./data/cron:/data
-      - ./logs:/logs
-    restart: always
-    environment:
-      - LOG_LEVEL=INFO
-      - LOG_DIR=logs
+    command: ["uvicorn", "api.entrypoint:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
   cli:
     build:
       context: .
-      dockerfile: cli/Dockerfile
-    command: >
-      python -m cli.entrypoint
-      --input /data/input/stocks.csv
-      --output /data/output/stocks_output.csv
-    volumes: # remove mounting code in production
-      - ./core:/app/core:ro
-      - ./cli:/app
-      - ./data/cli:/data
+      dockerfile: app/cli/Dockerfile
+    volumes:
+      - ./app/core:/core:ro
+      - ./app/cli:/cli
+      - ./app/utils:/utils:ro
+      - ./data/cli:/data/cli
       - ./logs:/logs
-    restart: "no"
     environment:
       - LOG_LEVEL=INFO
-      - LOG_DIR=logs
+      - LOG_DIR=/logs
+    command: >
+      python -m cli.entrypoint
+      --input /data/cli/stocks.csv
+      --output /data/cli/stocks_output.csv
+    restart: "no"
+
+  cron:
+    build:
+      context: .
+      dockerfile: app/cron/Dockerfile
+    volumes:
+      - ./app/core:/core:ro
+      - ./app/cron:/cron
+      - ./app/utils:/utils:ro
+      - ./data/cron:/data/cron
+      - ./logs:/logs
+    environment:
+      - LOG_LEVEL=INFO
+      - LOG_DIR=/logs
+    command: >
+      python -m cron.entrypoint
+      --input /data/cron/stocks.csv
+      --output /data/cron/stocks_output.csv
+      --cron "*/1 * * * *"
+    restart: always
+
+  watchdog:
+    build:
+      context: .
+      dockerfile: app/watchdog/Dockerfile
+    volumes:
+      - ./app/core:/core:ro
+      - ./app/watchdog:/watchdog
+      - ./app/utils:/utils:ro
+      - ./data/watchdog:/data/watchdog
+      - ./logs:/logs
+    environment:
+      - LOG_LEVEL=INFO
+      - LOG_DIR=/logs
+    command: python -m watchdog.entrypoint --input-dir /data/watchdog/input --output-dir /data/watchdog/output
+    restart: always
